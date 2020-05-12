@@ -6,7 +6,10 @@ import java.io.InputStream;
 public class MusicToolbar extends JMenuBar {
     JMenu file, edit, view, help;
 
-    public MusicToolbar(){
+    /**
+     *
+     */
+    public MusicToolbar() {
         file = createMenu("File");
         edit = createMenu("Edit");
         view = createMenu("View");
@@ -18,15 +21,25 @@ public class MusicToolbar extends JMenuBar {
         this.add(help);
     }
 
-    private JButton createButton(String path) {
-        JButton nButton = new JButton(path);
-
-        return nButton;
-    }
-
-    private JMenu createMenu(String name){
+    /**
+     * @param name name for menu
+     * @return returns JMenu to be added
+     */
+    private JMenu createMenu(String name) {
         JMenu menu = new JMenu(name);
 
         return menu;
     }
+
+    /**
+     * @param name name for menu item.
+     * @return mItem returns JMenuItem
+     */
+    private JMenuItem createMenuItem(String name) {
+        JMenuItem mItem = new JMenuItem(name);
+
+        return mItem;
+    }
+
+
 }
