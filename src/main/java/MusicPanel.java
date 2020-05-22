@@ -5,20 +5,13 @@ import java.io.InputStream;
 
 public class MusicPanel extends JPanel {
     MusicSlider musicSliderBar;
-    JButton play;
-    JButton pause;
-    JButton fastForward;
-    JButton rewind;
-    JButton begin;
-    JButton end;
-    JButton stop;
-    JButton nowPlaying;
+    JButton play, pause, fastForward, rewind, begin, end, stop, nowPlaying;
     JPanel buttonPanel;
 
     public MusicPanel() {
         createComponents();
         addComponents();
-        this.setSize(300, 200);
+        setMinimumSize(new Dimension(250, 250));
     }
 
     /**
@@ -121,8 +114,21 @@ public class MusicPanel extends JPanel {
         return nowPlaying;
     }
 
-    public JPanel getMusicSliderBar() {
+    public MusicSlider getMusicSliderBar() {
         return musicSliderBar;
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        musicSliderBar.setEnabled(enabled);
+        play.setEnabled(enabled);
+        pause.setEnabled(enabled);
+        stop.setEnabled(enabled);
+        fastForward.setEnabled(enabled);
+        begin.setEnabled(enabled);
+        end.setEnabled(enabled);
+        rewind.setEnabled(enabled);
+        buttonPanel.setEnabled(enabled);
+    }
 }

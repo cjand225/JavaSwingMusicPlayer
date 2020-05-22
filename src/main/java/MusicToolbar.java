@@ -1,22 +1,36 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
-import java.io.InputStream;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MusicToolbar extends JMenuBar {
-    JMenu file, edit, view, help;
+    JMenu file, view, help;
+    JMenuItem open, exit, about, album_cover, duration_bar;
+    final JFileChooser fileChoose;
 
     /**
      *
      */
     public MusicToolbar() {
+        //Menus
+        fileChoose = new JFileChooser();
+        FileNameExtensionFilter files = new FileNameExtensionFilter("wav files", "wav");
+        fileChoose.setFileFilter(files);
         file = createMenu("File");
-        edit = createMenu("Edit");
         view = createMenu("View");
         help = createMenu("Help");
 
+        //Menu Items
+        open = new JMenuItem("Open");
+        exit = new JMenuItem("Exit");
+
+        exit.addActionListener(e -> System.exit(0));
+
+
+        file.add(open);
+        file.add(exit);
+
         this.add(file);
-        this.add(edit);
         this.add(view);
         this.add(help);
     }
@@ -26,9 +40,7 @@ public class MusicToolbar extends JMenuBar {
      * @return returns JMenu to be added
      */
     private JMenu createMenu(String name) {
-        JMenu menu = new JMenu(name);
-
-        return menu;
+        return new JMenu(name);
     }
 
     /**
@@ -36,9 +48,15 @@ public class MusicToolbar extends JMenuBar {
      * @return mItem returns JMenuItem
      */
     private JMenuItem createMenuItem(String name) {
-        JMenuItem mItem = new JMenuItem(name);
+        return new JMenuItem(name);
+    }
 
-        return mItem;
+    public JMenuItem getOpen() {
+        return open;
+    }
+
+    public JFileChooser getFileChoose() {
+        return fileChoose;
     }
 
 

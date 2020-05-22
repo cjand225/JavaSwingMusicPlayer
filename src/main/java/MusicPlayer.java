@@ -1,5 +1,4 @@
 import javax.sound.sampled.*;
-import java.applet.*;
 import java.io.*;
 
 
@@ -11,26 +10,32 @@ public class MusicPlayer {
      *
      */
     public MusicPlayer() {
+    }
+
+
+    /**
+     * @param file file thats opened
+     * @throws IOException                   if file can't be opened/read
+     * @throws UnsupportedAudioFileException if file isn't proper format
+     * @throws LineUnavailableException      if audio resource isn't avaiable
+     */
+
+    private void openSoundFile(File file) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+        AudioInputStream is = AudioSystem.getAudioInputStream(file);
+        mClip = AudioSystem.getClip();
+        mClip.open(is);
+    }
+
+    public void openFile(File file) {
         try {
-            this.openFile("sounds/Venom.wav");
+            if (mClip != null) {
+                mClip.stop();
+                mClip.flush();
+            }
+            this.openSoundFile(file);
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * @param file path to file that opens
-     * @throws IOException if file can't be opened/read
-     * @throws UnsupportedAudioFileException if file isn't proper format
-     * @throws LineUnavailableException if audio resource isn't avaiable
-     */
-    public void openFile(String file) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
-        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        InputStream in = classloader.getResourceAsStream(file);
-        assert in != null;
-        AudioInputStream is = AudioSystem.getAudioInputStream(in);
-        mClip = AudioSystem.getClip();
-        mClip.open(is);
     }
 
 
@@ -88,5 +93,34 @@ public class MusicPlayer {
         mClip.setMicrosecondPosition(mClip.getMicrosecondLength());
     }
 
+    public long getClipDuration() {
+        return mClip.getMicrosecondLength();
+    }
+
+    public long getClipCurrentTime() {
+        return mClip.getMicrosecondPosition();
+    }
+
+    public long getClipDurationAsSeconds() {
+        return getClipCurrentTime() / 1000000;
+    }
+
+    public Clip getmClip() {
+        return mClip;
+    }
+
+    public void setClipPosition(long position) {
+        mClip.stop();
+        mClip.setMicrosecondPosition(position);
+        mClip.start();
+    }
+
+    public Boolean isPlaying() {
+        if (mClip != null) {
+            return mClip.isRunning();
+        } else {
+            return false;
+        }
+    }
 
 }

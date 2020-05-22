@@ -8,13 +8,22 @@ public class MusicSlider extends JPanel {
 
     public MusicSlider() {
         mSlider = new JSlider();
-        durationText = new JButton();
+        durationText = new JButton("00:00");
+
+
+        durationText.setBorderPainted(false);
+        durationText.setContentAreaFilled(false);
+        durationText.setFocusPainted(false);
+        durationText.setOpaque(false);
 
         mSlider.setMaximumSize(new Dimension(200, 10));
-
+        mSlider.setMinimum(0);
+        mSlider.setValue(0);
+        mSlider.setMaximum(1);
         this.add(mSlider);
         this.add(durationText);
     }
+
 
     /**
      * Returns public use of JSlider, allowing for out of class usage.
@@ -56,4 +65,24 @@ public class MusicSlider extends JPanel {
         return Box.createRigidArea(new Dimension(0, 15));
     }
 
+    public void setDurationText(long text) {
+        long minutes = text / 60;
+        long seconds = text % 60;
+        if (minutes < 10 && seconds < 10) {
+            durationText.setText(String.format("%02d:%02d", (text / 60), (text % 60)));
+        } else if (minutes < 10) {
+            durationText.setText(String.format("%02d:%d", (text / 60), (text % 60)));
+        } else if (seconds < 10) {
+            durationText.setText(String.format("%d:%02d", (text / 60), (text % 60)));
+        } else {
+            durationText.setText(String.format("%d:%d", (text / 60), (text % 60)));
+        }
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        mSlider.setEnabled(enabled);
+        durationText.setEnabled(enabled);
+    }
 }
