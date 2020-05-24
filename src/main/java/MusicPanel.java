@@ -7,11 +7,14 @@ public class MusicPanel extends JPanel {
     MusicSlider musicSliderBar;
     JButton play, pause, fastForward, rewind, begin, end, stop, nowPlaying;
     JPanel buttonPanel;
+    int BUTTON_SIZE = 32;
+    int PANEL_WIDTH = 250;
+    int PANEL_HEIGHT = 250;
 
     public MusicPanel() {
         createComponents();
         addComponents();
-        setMinimumSize(new Dimension(250, 250));
+        this.setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
     }
 
     /**
@@ -66,7 +69,7 @@ public class MusicPanel extends JPanel {
             e.printStackTrace();
         }
 
-        nButton.setPreferredSize(new Dimension(32, 32));
+        nButton.setPreferredSize(new Dimension(BUTTON_SIZE, BUTTON_SIZE));
         nButton.setOpaque(false);
         nButton.setContentAreaFilled(false);
 
@@ -106,9 +109,7 @@ public class MusicPanel extends JPanel {
         return end;
     }
 
-    public JButton getStop() {
-        return stop;
-    }
+    public JButton getStop() { return stop; }
 
     public JButton getNowPlaying() {
         return nowPlaying;

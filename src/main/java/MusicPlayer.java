@@ -1,5 +1,6 @@
 import javax.sound.sampled.*;
 import java.io.*;
+import java.util.concurrent.TimeUnit;
 
 
 public class MusicPlayer {
@@ -14,81 +15,60 @@ public class MusicPlayer {
 
 
     /**
-     * @param file file thats opened
+     * @param file file that is opened
      * @throws IOException                   if file can't be opened/read
      * @throws UnsupportedAudioFileException if file isn't proper format
-     * @throws LineUnavailableException      if audio resource isn't avaiable
+     * @throws LineUnavailableException      if audio resource isn't available
      */
-
     private void openSoundFile(File file) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
-        AudioInputStream is = AudioSystem.getAudioInputStream(file);
-        mClip = AudioSystem.getClip();
-        mClip.open(is);
+        AudioFileFormat format = AudioSystem.getAudioFileFormat(file);
+        if (format.getType() == AudioFileFormat.Type.WAVE){
+            AudioInputStream is = AudioSystem.getAudioInputStream(file);
+            mClip = AudioSystem.getClip();
+            mClip.open(is);
+        }
     }
 
     public void openFile(File file) {
         try {
-            if (mClip != null) {
-                mClip.stop();
-                mClip.flush();
-            }
+            if (mClip != null) { cleanClip(); }
             this.openSoundFile(file);
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
     }
 
-
-    /**
-     *
-     */
     public void play() {
         mClip.start();
     }
 
-    /**
-     *
-     */
     public void pause() {
         mClip.stop();
     }
 
-    /**
-     *
-     */
     public void stop() {
         mClip.stop();
         mClip.setMicrosecondPosition(0);
     }
 
-    /**
-     *
-     */
-    public void fastfoward() {
+    public void fastForward() {
         mClip.stop();
         mClip.setMicrosecondPosition(mClip.getMicrosecondPosition() + mClip.getFrameLength());
         mClip.start();
     }
 
-    /**
-     *
-     */
+
     public void rewind() {
         mClip.stop();
         mClip.setMicrosecondPosition(mClip.getMicrosecondPosition() - mClip.getFrameLength());
         mClip.start();
     }
 
-    /**
-     *
-     */
+
     public void begin() {
         mClip.setMicrosecondPosition(0);
     }
 
-    /**
-     *
-     */
     public void end() {
         mClip.setMicrosecondPosition(mClip.getMicrosecondLength());
     }
@@ -102,12 +82,9 @@ public class MusicPlayer {
     }
 
     public long getClipDurationAsSeconds() {
-        return getClipCurrentTime() / 1000000;
+        return TimeUnit.MICROSECONDS.toSeconds(getClipDuration());
     }
 
-    public Clip getmClip() {
-        return mClip;
-    }
 
     public void setClipPosition(long position) {
         mClip.stop();
@@ -123,4 +100,16 @@ public class MusicPlayer {
         }
     }
 
+    public boolean isLoaded() {
+        return mClip != null;
+    }
+
+    private void cleanClip(){
+        mClip.flush();
+        mClip.close();
+    }
+
+    public long getFrameLength(){
+        return mClip.getFrameLength();
+    }
 }

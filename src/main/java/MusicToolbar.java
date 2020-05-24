@@ -1,7 +1,5 @@
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MusicToolbar extends JMenuBar {
     JMenu file, view, help;
@@ -35,18 +33,11 @@ public class MusicToolbar extends JMenuBar {
         this.add(help);
     }
 
-    /**
-     * @param name name for menu
-     * @return returns JMenu to be added
-     */
+
     private JMenu createMenu(String name) {
         return new JMenu(name);
     }
 
-    /**
-     * @param name name for menu item.
-     * @return mItem returns JMenuItem
-     */
     private JMenuItem createMenuItem(String name) {
         return new JMenuItem(name);
     }
